@@ -14,12 +14,14 @@ const { PORT } = process.env;
 
 const blockChain = new BlockChain(null, io);
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
 
 app.post('/nodes', (req, res) => {
+  // 연결할 포트와 호스트 전달받기.
   const { host, port } = req.body;
   const { callback } = req.query;
   const node = `http://${host}:${port}`;
+  // 소켓 연결하기. 
   const socketNode = socketListeners(client(node), blockChain);
   blockChain.addNode(socketNode, blockChain);
   if (callback === 'true') {
