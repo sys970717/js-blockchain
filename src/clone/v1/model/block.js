@@ -1,4 +1,5 @@
 const DateUtil = require('../util/date');
+const Transaction = require('./transaction');
 
 const dateUtil = new DateUtil();
 
@@ -51,6 +52,16 @@ class Blockchain {
 
   printChain() {
     return this.chain;
+  }
+
+  getLastBlock() {
+    return this.chain[this.chain.length - 1];
+  }
+
+  createNewTransaction(amount, sender, receiver) {
+    this.pendingTransaction.push(new Transaction(amount, sender, receiver).getDetails());
+
+    return (this.getLastBlock()).index+1;
   }
 }
 
